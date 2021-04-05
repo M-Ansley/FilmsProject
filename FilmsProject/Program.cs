@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace FilmsProject
 {
+    [Serializable]
     class Program
     {
         // VARIABLE DECLARATION
@@ -35,9 +39,15 @@ namespace FilmsProject
                     Console.WriteLine("Case not recognised");
                     Console.Read();
                     break;
-            }                                   
+            }
 
-            ListFilms(index.films);
+            // ListFilms(index.films);
+
+            Console.Clear();
+            string jsonString = JsonSerializer.Serialize(index.films);
+            Console.Write(jsonString);
+
+            //File.WriteAllText(fileName, jsonString);
 
             Console.Read();
         }
@@ -56,8 +66,15 @@ namespace FilmsProject
             newFilm.yearViewed = Console.ReadLine();
             Console.Clear();
             Console.WriteLine("Please write a few words about it:");
-            newFilm.yearViewed = Console.ReadLine();
+            newFilm.description = Console.ReadLine();
             index.films.Add(newFilm);
+
+            //string jsonString = JsonSerializer.Serialize(newFilm);
+            //Console.Write(jsonString);
+            //// Index index2 = JsonSerializer.Deserialize<Index>(jsonString);
+            //// Console.Write(index2.films[0].filmName);
+            //Console.Read();
+
             Console.Clear();
             Console.WriteLine("Film added to index");
         }
@@ -108,12 +125,12 @@ namespace FilmsProject
 
     }
 
-    [System.Serializable]
-    struct Film
+    [Serializable]
+    public struct Film
     {
-        public string filmName;
-        public string yearViewed;
-        public string description;
+        public string filmName { get; set; }
+        public string yearViewed { get; set; }
+        public string description { get; set; }
 
         public Film(string filmName, string yearViewed, string description)
         {
@@ -123,8 +140,8 @@ namespace FilmsProject
         }
     }
 
-    [System.Serializable]
-    struct Index
+    [Serializable]
+    public struct Index
     {
         public List<Film> films;
 
